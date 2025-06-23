@@ -64,6 +64,18 @@ app.get("/registro", async (req, res) => {
   }
 });
 
+// Ruta para contar cuántos usuarios hay registrados
+app.get("/total_usuarios", async (req, res) => {
+  try {
+    const resultado = await pool.query("SELECT COUNT(*) FROM usuarios");
+    const total = parseInt(resultado.rows[0].count);
+    res.json({ totalUsuarios: total });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Error al contar los usuarios" });
+  }
+});
+
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Servidor corriendo en puerto ${PORT}`);
